@@ -3,8 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import Link from "next/link"
 import { Shield, ShoppingCart, Search, CreditCard, Star, BarChart3 } from "lucide-react"
-
-// import "@/app/globals.css"
+import "@/app/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 
