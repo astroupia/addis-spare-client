@@ -1,0 +1,14 @@
+{
+  "data": [
+    { "id": 1, "name": "Brake Pad", "price": 50, "category": "Brakes", "stock": 100 },
+    { "id": 2, "name": "Oil Filter", "price": 20, "category": "Engine", "stock": 200 },
+    { "id": 3, "name": "Air Filter", "price": 15, "category": "Engine", "stock": 150 },
+    { "id": 4, "name": "Spark Plug", "price": 10, "category": "Ignition", "stock": 300 },
+    { "id": 5, "name": "Alternator", "price": 150, "category": "Electrical", "stock": 20 },
+    { "id": 6, "name": "Battery", "price": 120, "category": "Electrical", "stock": 50 },
+    { "id": 7, "name": "Fuel Pump", "price": 90, "category": "Fuel System", "stock": 60 },
+    { "id": 8, "name": "Radiator", "price": 180, "category": "Cooling System", "stock": 25 },
+    { "id": 9, "name": "Timing Belt", "price": 80, "category": "Engine", "stock": 75 },
+    { "id": 10, "name": "Clutch Kit", "price": 250, "category": "Transmission", "stock": 30 }
+  ]
+}
