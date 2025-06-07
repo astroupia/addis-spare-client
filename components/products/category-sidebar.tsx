@@ -54,7 +54,7 @@ export default function CategorySidebar({ categories, makes, models, years }: Ca
       params.set("category", categoryId)
     }
 
-    router.push(`/products?${params.toString()}`)
+    router.push(`/?${params.toString()}`)
   }
 
   const handleMakeChange = (makeId: string) => {
@@ -68,7 +68,7 @@ export default function CategorySidebar({ categories, makes, models, years }: Ca
       params.delete("model") // Reset model when make changes
     }
 
-    router.push(`/products?${params.toString()}`)
+    router.push(`/?${params.toString()}`)
   }
 
   const handleModelChange = (modelId: string) => {
@@ -80,7 +80,7 @@ export default function CategorySidebar({ categories, makes, models, years }: Ca
       params.set("model", modelId)
     }
 
-    router.push(`/products?${params.toString()}`)
+    router.push(`/?${params.toString()}`)
   }
 
   const handleYearChange = (yearId: string) => {
@@ -92,11 +92,11 @@ export default function CategorySidebar({ categories, makes, models, years }: Ca
       params.set("year", yearId)
     }
 
-    router.push(`/products?${params.toString()}`)
+    router.push(`/?${params.toString()}`)
   }
 
   const clearAllFilters = () => {
-    router.push("/products")
+    router.push("/")
   }
 
   // Count active filters
