@@ -1,0 +1,42 @@
+[
+  {
+    "_id": "60d21b4667d0d8992e610c85",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password_hash": "$2a$10$dQmMoUdHXFIj9hKVIjkwXeqPu.OcWJQ5w2LNKEj9aKtYBEMf/wAO2",
+    "role": "customer",
+    "contact": {
+      "phone": "+1 (555) 123-4567",
+      "address": "123 Main St",
+      "city": "New York",
+      "country": "United States"
+    },
+    "status": "active",
+    "preferences": {
+      "language": "en",
+      "notifications": true
+    },
+    "created_at": "2023-01-15T08:30:00.000Z",
+    "updated_at": "2023-01-15T08:30:00.000Z"
+  },
+  {
+    "_id": "60d21b4667d0d8992e610c86",
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "password_hash": "$2a$10$dQmMoUdHXFIj9hKVIjkwXeqPu.OcWJQ5w2LNKEj9aKtYBEMf/wAO2",
+    "role": "supplier",
+    "contact": {
+      "phone": "+1 (555) 987-6543",
+      "address": "456 Oak Ave",
+      "city": "Los Angeles",
+      "country": "United States"
+    },
+    "status": "active",
+    "preferences": {
+      "language": "en",
+      "notifications": true
+    },
+    "created_at": "2023-01-20T10:15:00.000Z",
+    "updated_at": "2023-01-20T10:15:00.000Z"
+  }
+]
