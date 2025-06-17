@@ -1,11 +1,14 @@
 "use client"
 
+import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Users, Zap, Tag, ShoppingCart } from "lucide-react"
+import { useCart } from "@/lib/use-cart"
 import type { Product } from "./products-grid"
-import { useState } from "react"
 
 interface ProductCardProps {
   product: Product
@@ -13,6 +16,20 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [imageError, setImageError] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const router = useRouter()
+
+  // Get cart from context - safely with error handling
+  let addItem: (product: Product, quantity: number) => void
+  try {
+    const cart = useCart()
+    addItem = cart.addItem
+  } catch (error) {
+    console.error("Cart context not available:", error)
+    addItem = () => {
+      console.warn("Cart context not available. Add to cart will not work.")
+    }
+  }
 
   // Get the first image or use a placeholder
   const mainImage =
@@ -29,8 +46,20 @@ export default function ProductCard({ product }: ProductCardProps) {
   // Get key attributes for display
   const keyAttributes = product.attributes ? Object.entries(product.attributes).slice(0, 3) : []
 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault() // Prevent navigation to product page
+    e.stopPropagation()
+    addItem(product, 1)
+    // Navigate to cart page after adding item
+    router.push("/cart")
+  }
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow">
+    <div
+      className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow relative group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <Link href={`/product/${product._id}`} className="block">
         <div className="relative h-48 bg-gray-100 dark:bg-gray-700">
           <Image
@@ -48,6 +77,20 @@ export default function ProductCard({ product }: ProductCardProps) {
           ) : (
             <div className="absolute top-2 right-2 bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100 text-xs px-2 py-1 rounded">
               On Backorder
+            </div>
+          )}
+
+          {/* Hover overlay with Add to Cart button */}
+          {isHovered && (
+            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center transition-all duration-200">
+              <Button
+                onClick={handleAddToCart}
+                className="bg-[#670D2F] hover:bg-[#670D2F]/90 text-white transform scale-100 hover:scale-105 transition-transform duration-200"
+                size="sm"
+              >
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Add to Cart
+              </Button>
             </div>
           )}
         </div>
@@ -110,7 +153,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="text-xs text-gray-500 dark:text-gray-400">per part</div>
           </div>
 
-          <Button className="bg-[#670D2F] hover:bg-[#670D2F]/90 text-white">
+          <Button onClick={handleAddToCart} className="bg-[#670D2F] hover:bg-[#670D2F]/90 text-white">
             <ShoppingCart className="h-4 w-4 mr-2" />
             Add to Cart
           </Button>
