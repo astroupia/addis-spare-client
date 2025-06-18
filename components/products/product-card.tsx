@@ -1,13 +1,13 @@
 "use client"
 
-import type React from "react"
+import { useCart } from "@/components/cart/use-cart"
+import { Button } from "@/components/ui/button"
+import { ShoppingCart, Tag, Users, Zap } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Users, Zap, Tag, ShoppingCart } from "lucide-react"
-import { useCart } from "@/lib/use-cart"
+import type React from "react"
+import { useState } from "react"
 import type { Product } from "./products-grid"
 
 interface ProductCardProps {

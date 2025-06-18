@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   ShoppingCart,
   Heart,
@@ -27,8 +28,8 @@ import type { Product } from "@/components/products/products-grid"
 interface ProductDetailContentProps {
   product: Product
 }
-
 export default function ProductDetailContent({ product }: ProductDetailContentProps) {
+  const router = useRouter()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -57,6 +58,7 @@ export default function ProductDetailContent({ product }: ProductDetailContentPr
   const handleAddToCart = () => {
     // Add to cart logic here
     console.log(`Adding ${quantity} of ${product.name} to cart`)
+    router.push("/cart")
   }
 
   const handleWishlist = () => {
