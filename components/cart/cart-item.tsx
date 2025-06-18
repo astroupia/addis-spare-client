@@ -1,9 +1,9 @@
 "use client"
 
+import type { CartItem as CartItemType } from "@/components/cart/use-cart"
+import { useCart } from "@/components/cart/use-cart"
 import type { Product } from "@/components/products/products-grid"
 import { Button } from "@/components/ui/button"
-import type { CartItem as CartItemType } from "@/lib/use-cart"
-import { useCart } from "@/lib/use-cart"
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
