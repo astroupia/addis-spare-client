@@ -12,13 +12,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { getUserByEmail, verifyPassword } from  "@/mock/mock-admin-data" 
+
 
 type LoginCredentials = {
   email: string
   password: string
   remember_me: boolean
 }
-import { getUserByEmail, verifyPassword } from  "@/mock/mock-admin-data"  
+ 
 
 interface AdminLoginFormProps {
   onLoginSuccess?: (user_id: string) => void
