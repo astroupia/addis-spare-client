@@ -18,6 +18,7 @@ export function AdminUsers() {
   const [searchTerm, setSearchTerm] = useState("")
   const [isLoading, setIsLoading] = useState(true)
 
+  
   useEffect(() => {
     const loadUsers = async () => {
       setIsLoading(true)
@@ -124,7 +125,8 @@ export function AdminUsers() {
                       <div className="flex items-center space-x-3">
                         <Image
                           width={40}
-                          src={user.avatar_url || "/placeholder.svg?height=40&width=40"}
+                          height={40}
+                          src={user.avatar_url || "/placeholder.svg"}
                           alt={`${user.frist_name} ${user.last_name}`}
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -199,3 +201,4 @@ export function AdminUsers() {
     </div>
   )
 }
+
