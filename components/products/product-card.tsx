@@ -1,17 +1,22 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Users, Zap, Tag, ShoppingCart } from "lucide-react"
 import type { Product } from "./products-grid"
+import { useState } from "react"
 
 interface ProductCardProps {
   product: Product
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const [imageError, setImageError] = useState(false)
+
   // Get the first image or use a placeholder
   const mainImage =
-    product.images && product.images.length > 0
+    product.images && product.images.length > 0 && !imageError
       ? product.images[0]
       : `/placeholder.svg?height=400&width=400&text=${encodeURIComponent(product.name)}`
 
@@ -26,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow">
-      <Link href={`/products/${product._id}`} className="block">
+      <Link href={`/product/${product._id}`} className="block">
         <div className="relative h-48 bg-gray-100 dark:bg-gray-700">
           <Image
             src={mainImage || "/placeholder.svg"}
@@ -34,6 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             fill
             className="object-contain p-4"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={() => setImageError(true)}
           />
           {product.stockControlled ? (
             <div className="absolute top-2 right-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 text-xs px-2 py-1 rounded">
