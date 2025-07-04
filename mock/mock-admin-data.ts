@@ -1,24 +1,7 @@
 import type { User } from "@/types/auth"
-import type { ReactNode } from "react"
 
+// --- INTERFACES ---
 
-/**
- * Find a user by email from the mock_admin_users array.
- */
-export function getUserByEmail(email: string) {
-  return mock_admin_users.find((user) => user.email === email)
-}
-
-/**
- * Simulate password verification.
- * In a real app, use a secure hash comparison.
- */
-export function verifyPassword(inputPassword: string, storedHash: string) {
-  // For demo/mock: treat the hash as the plain password
-  return inputPassword === storedHash
-}
-
-// Admin Analytics Data
 export interface AdminAnalytics {
   overview: {
     total_users: number
@@ -34,7 +17,13 @@ export interface AdminAnalytics {
   }
   recent_activity: Array<{
     id: string
-    type: "user_registration" | "order_placed" | "product_added" | "user_login"
+    type:
+      | "user_registration"
+      | "order_placed"
+      | "product_added"
+      | "user_login"
+      | "content_reported"
+      | "content_taken_down"
     description: string
     timestamp: string
     user_id?: string
@@ -55,21 +44,55 @@ export interface AdminAnalytics {
   }>
 }
 
+export interface ReportedContent {
+  id: string
+  type: "product" | "user" | "review"
+  target_id: string
+  target_name: string
+  target_image?: string
+  reporter_id: string
+  reporter_name: string
+  reporter_email: string
+  reason: "inappropriate_content" | "spam" | "fraud" | "harassment" | "copyright" | "other"
+  description: string
+  status: "pending" | "under_review" | "resolved" | "dismissed"
+  priority: "low" | "medium" | "high" | "critical"
+  created_at: string
+  reviewed_at?: string
+  reviewed_by?: string
+  admin_notes?: string
+  evidence_urls?: string[]
+  action_taken?: "warning_issued" | "content_removed" | "user_suspended" | "account_banned" | "no_action"
+}
+
 // Admin User Management Data
 export interface AdminUser extends User {
   id: string
-  frist_name: string
+  email: string
+  password_hash: string
+  first_name: string
   last_name: string
-  contact: {
-    phone: string
-    address: string
-    city: string
-    country: string
-  }
   phone: string
-  last_login: string
-  total_orders: number
   avatar_url: string
+  email_verified: boolean
+  phone_verified: boolean
+  two_factor_enabled: boolean
+  role: "customer" | "supplier" | "admin" | "support"
+  status: "active" | "suspended" | "pending"
+  last_login: string
+  created_at: string
+  updated_at: string
+  preferences: {
+    language: string
+    currency: string
+    notifications: {
+      email: boolean
+      sms: boolean
+      push: boolean
+    }
+    theme: string
+  }
+  total_orders: number
   total_spent: number
   last_order_date?: string
   account_flags: Array<{
@@ -77,74 +100,11 @@ export interface AdminUser extends User {
     message: string
     date: string
   }>
-  email_verified: boolean
-  phone_verified: boolean
-  two_factor_enabled: boolean
-  role: "customer" | "admin" | "supplier" | "support"
-  status: "active" | "pending" | "suspended"
-  created_at: string
-  updated_at: string
-  preferences: {
-    language: string
-    currency: string
-    notifications: { email: boolean; sms: boolean; push: boolean }
-    theme: string
-  }
-  password_hash: string
+  privileges?: string[] // <-- Admin privileges
 }
 
-// Product Management Data
-export interface AdminProduct {
-  id: string
-  name: string
-  description: string
-  price: number
-  category: string
-  brand: string
-  sku: string
-  stock_quantity: number
-  status: "active" | "inactive" | "out_of_stock"
-  image_url: string
-  created_at: string
-  updated_at: string
-  seller_id: string
-  seller_name: string
-  total_sales: number
-  rating: number
-  reviews_count: number
-}
+// --- MOCK DATA ---
 
-// Order Management Data
-export interface AdminOrder {
-  total_amount: number
-  order_date: string
-  id: string
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled"
-  tracking_number: ReactNode
-  customer_name: string
-  order_number: string
-  items_count: number
-  customer_email: string
-  shipping_address: {
-    street: string
-    city: string
-    state: string
-    zip_code: string
-    country: string
-  }
-  payment_method: string
-  payment_status: "pending" | "completed" | "failed" | "refunded"
-  notes?: string
-  items: Array<{
-    product_id: string
-    product_name: string
-    quantity: number
-    price: number
-    image_url: string
-  }>
-}
-
-// Mock Admin Analytics
 export const mock_admin_analytics: AdminAnalytics = {
   overview: {
     total_users: 1247,
@@ -161,6 +121,18 @@ export const mock_admin_analytics: AdminAnalytics = {
   recent_activity: [
     {
       id: "activity_001",
+      type: "content_reported",
+      description: "Product reported for inappropriate content",
+      timestamp: "2024-01-15T15:30:00Z",
+    },
+    {
+      id: "activity_002",
+      type: "content_taken_down",
+      description: "User account suspended for policy violation",
+      timestamp: "2024-01-15T14:45:00Z",
+    },
+    {
+      id: "activity_003",
       type: "order_placed",
       description: "New order placed by John Doe",
       timestamp: "2024-01-15T14:30:00Z",
@@ -168,7 +140,7 @@ export const mock_admin_analytics: AdminAnalytics = {
       user_name: "John Doe",
     },
     {
-      id: "activity_002",
+      id: "activity_004",
       type: "user_registration",
       description: "New user registered: jane.smith@example.com",
       timestamp: "2024-01-15T13:45:00Z",
@@ -176,18 +148,18 @@ export const mock_admin_analytics: AdminAnalytics = {
       user_name: "Jane Smith",
     },
     {
-      id: "activity_003",
+      id: "activity_005",
       type: "product_added",
       description: "New product added: Brake Pad Set Premium",
       timestamp: "2024-01-15T12:20:00Z",
     },
     {
-      id: "activity_004",
+      id: "activity_006",
       type: "user_login",
       description: "Admin login: admin@addisparts.com",
       timestamp: "2024-01-15T11:15:00Z",
-      user_id: "user_003",
-      user_name: "Admin User",
+      user_id: "admin_001",
+      user_name: "Super Admin",
     },
   ],
   top_products: [
@@ -224,124 +196,202 @@ export const mock_admin_analytics: AdminAnalytics = {
   ],
 }
 
-// Mock Admin Users
-export const mock_admin_users: AdminUser[] = [{
+// --- ADMIN USERS WITH PRIVILEGES ---
+
+export const mock_admin_users: AdminUser[] = [
+  {
+    _id: "admin_001",
+    id: "admin_001",
+    name: "Super Admin",
+    contact: {
+      phone: "+1-555-0000",
+      address: "1 Admin Plaza",
+      city: "Addis Ababa",
+      country: "Ethiopia",
+    },
+    email: "admin@addisparts.com",
+    password_hash: "password123", // In real app, use hashed password
+    first_name: "Super",
+    last_name: "Admin",
+    phone: "+1-555-0000",
+    avatar_url: "/placeholder.svg?height=100&width=100",
+    email_verified: true,
+    phone_verified: true,
+    two_factor_enabled: true,
+    role: "admin",
+    status: "active",
+    last_login: "2024-01-15T11:15:00Z",
+    created_at: "2023-01-01T08:00:00Z",
+    updated_at: "2024-01-15T11:15:00Z",
+    preferences: {
+      language: "en",
+      currency: "ETB",
+      notifications: { email: true, sms: true, push: true },
+      theme: "dark",
+    },
+    total_orders: 0,
+    total_spent: 0,
+    account_flags: [],
+    privileges: [
+      "manage_users",
+      "manage_products",
+      "manage_orders",
+      "view_reports",
+      "moderate_content",
+      "access_settings",
+      "impersonate_users",
+    ],
+  },
+  {
     _id: "user_001",
     id: "user_001",
     name: "John Doe",
     contact: {
-      phone: "+1-555-0100",
+      phone: "+1-555-0123",
       address: "123 Main St",
       city: "Springfield",
       country: "USA",
     },
-    email: "admin@addisparts.com",
+    email: "john.doe@example.com",
     password_hash: "password123",
-    frist_name: "John",
+    first_name: "John",
     last_name: "Doe",
-    phone: "+1-555-0100",
-    avatar_url: "/avatars/john.png",
+    phone: "+1-555-0123",
+    avatar_url: "/placeholder.svg?height=100&width=100",
     email_verified: true,
     phone_verified: true,
     two_factor_enabled: false,
-    role: "admin",
+    role: "customer",
     status: "active",
-    last_login: "2025-06-25T08:00:00Z",
-    created_at: "2024-12-01T10:00:00Z",
-    updated_at: "2025-06-25T08:00:00Z",
+    last_login: "2024-01-15T10:30:00Z",
+    created_at: "2023-06-15T08:30:00Z",
+    updated_at: "2024-01-15T10:30:00Z",
     preferences: {
       language: "en",
       currency: "USD",
-      notifications: { email: true, sms: false, push: true },
+      notifications: { email: true, sms: true, push: true },
       theme: "light",
     },
-    total_orders: 12,
-    total_spent: 1090.45,
-    last_order_date: "2025-06-20T12:30:00Z",
-    account_flags: [],
+    total_orders: 15,
+    total_spent: 1234.56,
+    last_order_date: "2024-01-10T14:30:00Z",
+    account_flags: [
+      {
+        type: "info",
+        message: "Welcome bonus applied",
+        date: "2023-06-15T08:30:00Z",
+      },
+    ],
   },
   {
     _id: "user_002",
     id: "user_002",
-    name: "Maya Tesfaye",
+    name: "Jane Smith",
     contact: {
-      phone: "+251-911-123456",
-      address: "",
-      city: "",
-      country: "",
+      phone: "+1-555-0456",
+      address: "789 Maple Ave",
+      city: "Chicago",
+      country: "USA",
     },
-    email: "maya.t@example.com",
-    password_hash: "$2b$12$exampleHashedPassword002",
-    frist_name: "Maya",
-    last_name: "Tesfaye",
-    phone: "+251-911-123456",
-    avatar_url: "/avatars/maya.png",
-    email_verified: false,
-    phone_verified: true,
-    two_factor_enabled: true,
-    role: "customer",
-    status: "pending",
-    last_login: "2025-06-20T07:45:00Z",
-    created_at: "2025-01-10T11:30:00Z",
-    updated_at: "2025-06-20T07:45:00Z",
-    preferences: {
-      language: "am",
-      currency: "ETB",
-      notifications: { email: true, sms: true, push: false },
-      theme: "dark",
-    },
-    total_orders: 4,
-    total_spent: 420.25,
-    last_order_date: "2025-05-25T09:10:00Z",
-    account_flags: [
-      {
-        type: "warning",
-        message: "Phone number changed recently",
-        date: "2025-06-01T00:00:00Z",
-      },
-    ],
-  },
-  {
-    _id: "user_003",
-    id: "user_003",
-    name: "Ali Nur",
-    contact: {
-      phone: "+251-922-334455",
-      address: "",
-      city: "",
-      country: "",
-    },
-    email: "ali.nur@example.com",
-    password_hash: "$2b$12$exampleHashedPassword003",
-    frist_name: "Ali",
-    last_name: "Nur",
-    phone: "+251-922-334455",
-    avatar_url: "/avatars/ali.png",
+    email: "jane.smith@example.com",
+    password_hash: "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/RK.s5uDxy",
+    first_name: "Jane",
+    last_name: "Smith",
+    phone: "+1-555-0456",
+    avatar_url: "/placeholder.svg?height=100&width=100",
     email_verified: true,
     phone_verified: false,
     two_factor_enabled: false,
     role: "customer",
-    status: "suspended",
-    last_login: "2025-06-10T14:30:00Z",
-    created_at: "2024-11-20T13:45:00Z",
-    updated_at: "2025-06-10T14:30:00Z",
+    status: "active",
+    last_login: "2024-01-14T15:45:00Z",
+    created_at: "2023-08-20T12:15:00Z",
+    updated_at: "2024-01-14T15:45:00Z",
     preferences: {
       language: "en",
-      currency: "ETB",
-      notifications: { email: false, sms: true, push: true },
+      currency: "USD",
+      notifications: { email: true, sms: false, push: true },
+      theme: "dark",
+    },
+    total_orders: 8,
+    total_spent: 567.34,
+    last_order_date: "2024-01-12T09:15:00Z",
+    account_flags: [
+      {
+        type: "info",
+        message: "Welcome bonus applied",
+        date: "2023-08-20T12:15:00Z",
+      },
+    ],
+  },
+  {
+    _id: "user_004",
+    id: "user_004",
+    name: "Mike Wilson",
+    contact: {
+      phone: "+1-555-0789",
+      address: "123 Elm St",
+      city: "Milwaukee",
+      country: "USA",
+    },
+    email: "mike.wilson@example.com",
+    password_hash: "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/RK.s5uDxy",
+    first_name: "Mike",
+    last_name: "Wilson",
+    phone: "+1-555-0789",
+    avatar_url: "/placeholder.svg?height=100&width=100",
+    email_verified: false,
+    phone_verified: true,
+    two_factor_enabled: false,
+    role: "customer",
+    status: "suspended",
+    last_login: "2024-01-10T08:20:00Z",
+    created_at: "2023-12-01T10:00:00Z",
+    updated_at: "2024-01-10T08:20:00Z",
+    preferences: {
+      language: "en",
+      currency: "USD",
+      notifications: { email: false, sms: true, push: false },
       theme: "system",
     },
-    total_orders: 2,
-    total_spent: 189.99,
-    last_order_date: "2025-04-01T16:00:00Z",
+    total_orders: 3,
+    total_spent: 189.45,
+    last_order_date: "2024-01-08T14:30:00Z",
     account_flags: [
       {
         type: "error",
-        message: "Account flagged for suspicious activity",
-        date: "2025-06-10T00:00:00Z",
+        message: "Account suspended due to policy violation",
+        date: "2024-01-10T00:00:00Z",
+      },
+      {
+        type: "warning",
+        message: "Email not verified",
+        date: "2023-12-01T00:00:00Z",
       },
     ],
-  },]
+  },
+]
+
+// --- ADMIN PRODUCT INTERFACE ---
+export interface AdminProduct {
+  id: string
+  name: string
+  description: string
+  price: number
+  category: string
+  brand: string
+  sku: string
+  stock_quantity: number
+  status: "active" | "inactive" | "out_of_stock" | "reported" | "taken_down"
+  image_url: string
+  created_at: string
+  updated_at: string
+  seller_id: string
+  seller_name: string
+  total_sales: number
+  rating: number
+  reviews_count: number
+}
 
 // Mock Admin Products
 export const mock_admin_products: AdminProduct[] = [
@@ -402,7 +452,58 @@ export const mock_admin_products: AdminProduct[] = [
     rating: 4.9,
     reviews_count: 67,
   },
+  {
+    id: "4",
+    name: "Counterfeit Brake Pads",
+    description: "Fake brake pads being sold as genuine",
+    price: 25.99,
+    category: "Brakes",
+    brand: "FakeBrand",
+    sku: "FB-FAKE-001",
+    stock_quantity: 15,
+    status: "reported",
+    image_url: "/placeholder.svg?height=100&width=100",
+    created_at: "2024-01-01T10:00:00Z",
+    updated_at: "2024-01-15T14:30:00Z",
+    seller_id: "seller_003",
+    seller_name: "Suspicious Seller",
+    total_sales: 5,
+    rating: 2.1,
+    reviews_count: 12,
+  },
 ]
+
+// --- ADMIN ORDER INTERFACE ---
+export interface AdminOrder {
+  id: string
+  order_number: string
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled"
+  total_amount: number
+  currency: string
+  items_count: number
+  order_date: string
+  estimated_delivery?: string
+  tracking_number?: string
+  customer_name: string
+  customer_email: string
+  shipping_address: {
+    street: string
+    city: string
+    state: string
+    zip_code: string
+    country: string
+  }
+  payment_method: string
+  payment_status: "pending" | "completed" | "failed"
+  notes?: string
+  items: Array<{
+    product_id: string
+    product_name: string
+    quantity: number
+    price: number
+    image_url: string
+  }>
+}
 
 // Mock Admin Orders
 export const mock_admin_orders: AdminOrder[] = [
@@ -411,9 +512,10 @@ export const mock_admin_orders: AdminOrder[] = [
     order_number: "ORD-2024-001",
     status: "delivered",
     total_amount: 156.47,
+    currency: "USD",
     items_count: 3,
     order_date: "2024-01-10T14:30:00Z",
- 
+    estimated_delivery: "2024-01-15T18:00:00Z",
     tracking_number: "1Z999AA1234567890",
     customer_name: "John Doe",
     customer_email: "john.doe@example.com",
@@ -455,8 +557,10 @@ export const mock_admin_orders: AdminOrder[] = [
     order_number: "ORD-2024-002",
     status: "shipped",
     total_amount: 89.95,
+    currency: "USD",
     items_count: 2,
     order_date: "2024-01-12T09:15:00Z",
+    estimated_delivery: "2024-01-18T17:00:00Z",
     tracking_number: "1Z999AA1234567891",
     customer_name: "Jane Smith",
     customer_email: "jane.smith@example.com",
@@ -491,11 +595,11 @@ export const mock_admin_orders: AdminOrder[] = [
     order_number: "ORD-2024-003",
     status: "processing",
     total_amount: 245.75,
+    currency: "USD",
     items_count: 4,
     order_date: "2024-01-14T16:45:00Z",
-    tracking_number: "1Z999AA1234567892",
-    customer_name: "Ali Nur",
-    customer_email: "ali.nur@example.com",
+    customer_name: "Mike Wilson",
+    customer_email: "mike.wilson@example.com",
     shipping_address: {
       street: "789 Pine St",
       city: "Milwaukee",
@@ -532,6 +636,102 @@ export const mock_admin_orders: AdminOrder[] = [
   },
 ]
 
+// Mock Reported Content
+export const mock_reported_content: ReportedContent[] = [
+  {
+    id: "report_001",
+    type: "product",
+    target_id: "4",
+    target_name: "Counterfeit Brake Pads",
+    target_image: "/placeholder.svg?height=100&width=100",
+    reporter_id: "user_001",
+    reporter_name: "John Doe",
+    reporter_email: "john.doe@example.com",
+    reason: "fraud",
+    description:
+      "This product appears to be counterfeit. The packaging and quality don't match the genuine brand. I received these and they look nothing like the real AutoPro brake pads I've purchased before.",
+    status: "pending",
+    priority: "high",
+    created_at: "2024-01-15T14:30:00Z",
+    evidence_urls: ["/placeholder.svg?height=200&width=200"],
+  },
+  {
+    id: "report_002",
+    type: "user",
+    target_id: "user_004",
+    target_name: "Mike Wilson",
+    target_image: "/placeholder.svg?height=100&width=100",
+    reporter_id: "user_002",
+    reporter_name: "Jane Smith",
+    reporter_email: "jane.smith@example.com",
+    reason: "harassment",
+    description:
+      "This user has been sending inappropriate messages through the messaging system. They've been harassing me about a product I'm selling and using offensive language.",
+    status: "under_review",
+    priority: "medium",
+    created_at: "2024-01-14T16:20:00Z",
+    reviewed_at: "2024-01-15T09:00:00Z",
+    reviewed_by: "admin_001",
+    admin_notes: "Reviewing message history and user behavior patterns.",
+  },
+  {
+    id: "report_003",
+    type: "product",
+    target_id: "5",
+    target_name: "Spam Product Listing",
+    target_image: "/placeholder.svg?height=100&width=100",
+    reporter_id: "user_001",
+    reporter_name: "John Doe",
+    reporter_email: "john.doe@example.com",
+    reason: "spam",
+    description:
+      "This listing is clearly spam. The description is nonsensical and the images don't match the product title. It seems like the seller is just trying to get clicks.",
+    status: "resolved",
+    priority: "low",
+    created_at: "2024-01-13T11:15:00Z",
+    reviewed_at: "2024-01-14T10:30:00Z",
+    reviewed_by: "admin_001",
+    admin_notes: "Product removed for spam content. Seller warned.",
+    action_taken: "content_removed",
+  },
+  {
+    id: "report_004",
+    type: "product",
+    target_id: "6",
+    target_name: "Inappropriate Product Images",
+    target_image: "/placeholder.svg?height=100&width=100",
+    reporter_id: "user_002",
+    reporter_name: "Jane Smith",
+    reporter_email: "jane.smith@example.com",
+    reason: "inappropriate_content",
+    description:
+      "The product images contain inappropriate content that is not suitable for a car parts marketplace. This violates the platform's content policy.",
+    status: "resolved",
+    priority: "high",
+    created_at: "2024-01-12T14:45:00Z",
+    reviewed_at: "2024-01-13T08:20:00Z",
+    reviewed_by: "admin_002",
+    admin_notes: "Images reviewed and found to violate content policy. Product images updated by seller.",
+    action_taken: "warning_issued",
+  },
+  {
+    id: "report_005",
+    type: "user",
+    target_id: "user_005",
+    target_name: "Scammer Account",
+    reporter_id: "user_001",
+    reporter_name: "John Doe",
+    reporter_email: "john.doe@example.com",
+    reason: "fraud",
+    description:
+      "This user is running a scam operation. They take payments but never ship products. I've seen multiple complaints about them in forums.",
+    status: "pending",
+    priority: "critical",
+    created_at: "2024-01-15T16:00:00Z",
+    evidence_urls: ["/placeholder.svg?height=200&width=200", "/placeholder.svg?height=200&width=200"],
+  },
+]
+
 // Helper functions
 export function getAdminAnalytics(): AdminAnalytics {
   return mock_admin_analytics
@@ -545,40 +745,15 @@ export function getAllProducts(): AdminProduct[] {
   return mock_admin_products
 }
 
+export function getAllReportedContent(): ReportedContent[] {
+  return mock_reported_content
+}
+export function getUserByEmail(email: string): AdminUser | undefined {
+  return mock_admin_users.find((user) => user.email === email)
+}
+
 export function getAllOrders(): AdminOrder[] {
   return mock_admin_orders
-}
-
-export function getUserById(id: string): AdminUser | undefined {
-  return mock_admin_users.find((user) => user.id === id)
-}
-
-export function getProductById(id: string): AdminProduct | undefined {
-  return mock_admin_products.find((product) => product.id === id)
-}
-
-export function getOrderById(id: string): AdminOrder | undefined {
-  return mock_admin_orders.find((order) => order.id === id)
-}
-
-export function updateUserStatus(userId: string, status: "active" | "suspended" | "pending"): boolean {
-  const userIndex = mock_admin_users.findIndex((user) => user.id === userId)
-  if (userIndex !== -1) {
-    mock_admin_users[userIndex].status = status
-    mock_admin_users[userIndex].updated_at = new Date().toISOString()
-    return true
-  }
-  return false
-}
-
-export function updateProductStatus(productId: string, status: "active" | "inactive" | "out_of_stock"): boolean {
-  const productIndex = mock_admin_products.findIndex((product) => product.id === productId)
-  if (productIndex !== -1) {
-    mock_admin_products[productIndex].status = status
-    mock_admin_products[productIndex].updated_at = new Date().toISOString()
-    return true
-  }
-  return false
 }
 
 export function updateOrderStatus(
@@ -591,4 +766,72 @@ export function updateOrderStatus(
     return true
   }
   return false
+}
+
+export function updateUserStatus(
+  userId: string,
+  status: "active" | "suspended" | "pending"
+): boolean {
+  const userIndex = mock_admin_users.findIndex((user) => user.id === userId)
+  if (userIndex !== -1) {
+    mock_admin_users[userIndex].status = status
+    return true
+  }
+  return false
+}
+
+export function updateProductStatus(
+  productId: string,
+  status: "active" | "inactive" | "out_of_stock" | "reported" | "taken_down"
+): boolean {
+  const productIndex = mock_admin_products.findIndex((product) => product.id === productId)
+  if (productIndex !== -1) {
+    mock_admin_products[productIndex].status = status
+    return true
+  }
+  return false
+}
+
+export function updateReportStatus(
+  reportId: string,
+  status: "pending" | "under_review" | "resolved" | "dismissed",
+  adminId?: string,
+  adminNotes?: string,
+  actionTaken?: "warning_issued" | "content_removed" | "user_suspended" | "account_banned" | "no_action",
+): boolean {
+  const reportIndex = mock_reported_content.findIndex((report) => report.id === reportId)
+  if (reportIndex !== -1) {
+    mock_reported_content[reportIndex].status = status
+    mock_reported_content[reportIndex].reviewed_at = new Date().toISOString()
+    if (adminId) mock_reported_content[reportIndex].reviewed_by = adminId
+    if (adminNotes) mock_reported_content[reportIndex].admin_notes = adminNotes
+    if (actionTaken) mock_reported_content[reportIndex].action_taken = actionTaken
+    return true
+  }
+  return false
+}
+
+export function getReportById(reportId: string): ReportedContent | undefined {
+  return mock_reported_content.find((report) => report.id === reportId)
+}
+
+export function takeDownContent(reportId: string, adminId: string, reason: string): boolean {
+  const report = getReportById(reportId)
+  if (!report) return false
+
+  // Update report status
+  updateReportStatus(reportId, "resolved", adminId, reason, "content_removed")
+
+  // Take action based on content type
+  if (report.type === "product") {
+    updateProductStatus(report.target_id, "taken_down")
+  } else if (report.type === "user") {
+    updateUserStatus(report.target_id, "suspended")
+  }
+
+  return true
+}
+
+export function dismissReport(reportId: string, adminId: string, reason: string): boolean {
+  return updateReportStatus(reportId, "dismissed", adminId, reason, "no_action")
 }
