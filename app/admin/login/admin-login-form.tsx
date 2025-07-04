@@ -12,7 +12,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { getUserByEmail, verifyPassword } from  "@/mock/mock-admin-data" 
+import { getUserByEmail } from  "@/mock/mock-admin-data" 
+
+// Simple password verification function (replace with secure hash check in production)
+function verifyPassword(inputPassword: string, storedPasswordHash: string): boolean {
+  // For demo/mock: assume storedPasswordHash is plain text
+  return inputPassword === storedPasswordHash
+}
 
 
 type LoginCredentials = {
@@ -86,7 +92,7 @@ export function AdminLoginForm({ onLoginSuccess, className }: AdminLoginFormProp
         JSON.stringify({
           user_id: user.id,
           email: user.email,
-          name: `${user.frist_name} ${user.last_name}`,
+          name: `${user.first_name} ${user.last_name}`,
           role: user.role,
           expires_at: new Date(Date.now() + (credentials.remember_me ? 30 : 1) * 24 * 60 * 60 * 1000).toISOString(),
         }),
@@ -149,24 +155,24 @@ export function AdminLoginForm({ onLoginSuccess, className }: AdminLoginFormProp
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <div className="relative">
-            <Lock className={cn("absolute left-3 top-3 h-5 w-5", is_dark ? "text-gray-400" : "text-gray-500")} />
-            <Input
-              id="password"
-              name="password"
-              type={show_password ? "text" : "password"}
-              value={credentials.password}
-              onChange={handleInputChange}
-              placeholder="Enter admin password"
-              className={cn("pl-10 pr-10", is_dark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300")}
-              required
-            />
-            <button type="button" onClick={() => setShowPassword(!show_password)} className="absolute right-3 top-3">
-              {show_password ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
-            </button>
-          </div>
-        </div>
+  <Label htmlFor="password">Password</Label>
+  <div className="relative">
+    <Lock className={cn("absolute left-3 top-3 h-5 w-5", is_dark ? "text-gray-400" : "text-gray-500")} />
+    <Input
+      id="password"
+      name="password"
+      type={show_password ? "text" : "password"}
+      value={credentials.password}
+      onChange={handleInputChange}
+      placeholder="Enter admin password"
+      className={cn("pl-10 pr-10", is_dark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300")}
+      required
+    />
+    <button type="button" onClick={() => setShowPassword(!show_password)} className="absolute right-3 top-3">
+      {show_password ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+    </button>
+  </div>
+</div>
 
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
