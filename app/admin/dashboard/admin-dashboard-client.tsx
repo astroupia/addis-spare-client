@@ -5,20 +5,26 @@ import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { LogOut, Shield } from "lucide-react"
-import { AdminOverview } from "@/components/admin/overview"  
+import { AdminOverview } from "@/components/admin/overview"
 import { AdminUsers } from "@/components/admin/users"
 import { AdminProducts } from "@/components/admin/product"
 import { AdminOrders } from "@/components/admin/order"
 import { AdminAnalytics } from "@/components/admin/analytics"
+import { AdminModeration } from "@/components/admin/moderation"
+import { AdminSettings } from "@/components/admin/setting"
+
+interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'superadmin' | 'staff';
+  // Add other fields as needed
+}
+
 
 export function AdminDashboardClient() {
   const [activeTab, setActiveTab] = useState("overview")
-  interface AdminUserSession {
-    name: string
-    role: string
-    [key: string]: unknown
-  }
-  const [adminUser, setAdminUser] = useState<AdminUserSession | null>(null)
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const router = useRouter()
 
   useEffect(() => {
@@ -40,7 +46,7 @@ export function AdminDashboardClient() {
 
   const handleLogout = () => {
     localStorage.removeItem("user_session")
-    router.push("/admin/login")
+    router.push("/login")
   }
 
   if (!adminUser) {
@@ -83,12 +89,14 @@ export function AdminDashboardClient() {
       {/* Admin Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="moderation">Moderation</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -109,6 +117,14 @@ export function AdminDashboardClient() {
 
           <TabsContent value="analytics" className="space-y-6">
             <AdminAnalytics />
+          </TabsContent>
+
+          <TabsContent value="moderation" className="space-y-6">
+            <AdminModeration />
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <AdminSettings />
           </TabsContent>
         </Tabs>
       </main>
