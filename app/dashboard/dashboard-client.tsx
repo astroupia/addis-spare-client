@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AuthHeader from "@/components/dashboard/log-into-account";
 import { ViewOrderHistory } from "@/components/dashboard/view-order-history";
 import { ManageProfileInformation } from "@/components/dashboard/manage-profile";
+import { ReviewsTab } from "@/components/dashboard/reviews";
 import SavedItems from "@/components/dashboard/saved";
 import type { User, OrderHistory, SavedItem } from "@/types/auth";
 import { cn } from "@/lib/utils";
@@ -19,15 +20,15 @@ export default function DashboardClient() {
   const [orderHistory, setOrderHistory] = useState<OrderHistory[]>([]);
   const [savedItems, setSavedItems] = useState<SavedItem[]>([]);
   const [activeTab, setActiveTab] = useState("overview");
- 
-const handleUserLoad = useCallback(
-  (userData: User, orders: OrderHistory[], saved: SavedItem[]) => {
-    setUser(userData);
-    setOrderHistory(orders);
-    setSavedItems(saved);
-  },
-  [] // or add [setUser, setOrderHistory, setSavedItems] if not defined in the same scope
-);
+
+  const handleUserLoad = useCallback(
+    (userData: User, orders: OrderHistory[], saved: SavedItem[]) => {
+      setUser(userData);
+      setOrderHistory(orders);
+      setSavedItems(saved);
+    },
+    []
+  );
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -99,81 +100,79 @@ const handleUserLoad = useCallback(
               </h2>
             </div>
           </div>
-         
+
           <Button onClick={handleLogout} variant="outline" className="flex items-center space-x-2">
             <LogOut className="h-4 w-4" />
             <span>Sign Out</span>
           </Button>
         </div>
-                 {/* Stats Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center space-x-4">
-                          <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/20">
-                            <Package className="h-6 w-6 text-blue-600" />
-                          </div>
-                          <div>
-                            <p className="text-2xl font-bold">{orderHistory.length}</p>
-                            <p className="text-sm text-gray-500">Total Orders</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-          
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center space-x-4">
-                          <div className="p-3 rounded-full bg-red-100 dark:bg-red-900/20">
-                            <Heart className="h-6 w-6 text-red-600" />
-                          </div>
-                          <div>
-                            <p className="text-2xl font-bold">{savedItems.length}</p>
-                            <p className="text-sm text-gray-500">Saved Items</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-          
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center space-x-4">
-                          <div className="p-3 rounded-full bg-green-100 dark:bg-green-900/20">
-                            <Shield className="h-6 w-6 text-green-600" />
-                          </div>
-                          <div>
-                            <p className="text-2xl font-bold">{user.two_factor_enabled ? "ON" : "OFF"}</p>
-                            <p className="text-sm text-gray-500">2FA Security</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-          
-                    <Card>
-                      <CardContent className="p-6">
-                        <div className="flex items-center space-x-4">
-                          <div className="p-3 rounded-full bg-purple-100 dark:bg-purple-900/20">
-                            <Star className="h-6 w-6 text-purple-600" />
-                          </div>
-                          <div>
-                            <p className="text-2xl font-bold">{user.role.toUpperCase()}</p>
-                            <p className="text-sm text-gray-500">Account Type</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {/* ...Card Sections... */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/20">
+                  <Package className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{orderHistory.length}</p>
+                  <p className="text-sm text-gray-500">Total Orders</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 rounded-full bg-red-100 dark:bg-red-900/20">
+                  <Heart className="h-6 w-6 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{savedItems.length}</p>
+                  <p className="text-sm text-gray-500">Saved Items</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 rounded-full bg-green-100 dark:bg-green-900/20">
+                  <Shield className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{user.two_factor_enabled ? "ON" : "OFF"}</p>
+                  <p className="text-sm text-gray-500">2FA Security</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 rounded-full bg-purple-100 dark:bg-purple-900/20">
+                  <Star className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{user.role.toUpperCase()}</p>
+                  <p className="text-sm text-gray-500">Account Type</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="saved">Saved Items</TabsTrigger>
             <TabsTrigger value="profile">Profile</TabsTrigger>
-          </TabsList>
+            <TabsTrigger value="reviews">Reviews</TabsTrigger>
+         </TabsList>
 
           <TabsContent value="overview">
             <ViewOrderHistory
@@ -201,8 +200,14 @@ const handleUserLoad = useCallback(
           <TabsContent value="profile">
             <ManageProfileInformation user={user} />
           </TabsContent>
+
+
+          <TabsContent value="reviews">
+             <ReviewsTab />
+           </TabsContent>
+
         </Tabs>
-      </div> 
+      </div>
     </div>
   );
 }
