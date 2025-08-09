@@ -540,6 +540,7 @@ export function AdminModeration() {
               className="bg-[#670D2F] hover:bg-[#670D2F]/90"
             >
               {isLoading ? "Taking Action..." : "Take Action"}
+
             </Button>
           </DialogFooter>
         </DialogContent>

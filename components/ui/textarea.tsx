@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // components/ui/textarea.tsx
 
 import React from 'react';
@@ -45,3 +46,27 @@ export const Textarea: React.FC<TextareaProps> = ({
     </div>
   );
 };
+=======
+import * as React from "react"
+import { cn } from "@/lib/utils"
+
+// Remove the empty interface and use the type directly in forwardRef
+const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
+  ({ className, ...props }, ref) => {
+    return (
+      <textarea
+        className={cn(
+          "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#670D2F] disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+
+Textarea.displayName = "Textarea"
+
+export { Textarea }
+>>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a

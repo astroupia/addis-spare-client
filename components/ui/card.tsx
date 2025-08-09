@@ -1,13 +1,18 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
+// Main Card component with forwardRef and updated classNames
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
       data-slot="card"
       className={cn(
+<<<<<<< HEAD
         "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+=======
+        "rounded-xl border bg-card text-card-foreground py-6 shadow-sm flex flex-col gap-6 dark:border-neutral-800 dark:bg-neutral-900",
+>>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
         className
       )}
       {...props}
@@ -16,6 +21,11 @@ const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
 );
 Card.displayName = "Card";
 
+<<<<<<< HEAD
+=======
+
+// Header
+>>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
@@ -31,18 +41,26 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardHeader.displayName = "CardHeader";
 
+<<<<<<< HEAD
+=======
+// Title
+>>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
 const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn("leading-none font-semibold text-lg", className)}
       {...props}
     />
   )
 );
 CardTitle.displayName = "CardTitle";
 
+<<<<<<< HEAD
+=======
+// Description
+>>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
 const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
@@ -55,6 +73,10 @@ const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
 );
 CardDescription.displayName = "CardDescription";
 
+<<<<<<< HEAD
+=======
+// Action section
+>>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
 const CardAction = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
@@ -70,6 +92,7 @@ const CardAction = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 );
 CardAction.displayName = "CardAction";
 
+// Content
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
@@ -81,6 +104,7 @@ const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
   )
 );
 CardContent.displayName = "CardContent";
+<<<<<<< HEAD
 
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
@@ -93,7 +117,23 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
   )
 );
 CardFooter.displayName = "CardFooter";
+=======
+>>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
 
+// Footer
+const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      data-slot="card-footer"
+      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
+      {...props}
+    />
+  )
+);
+CardFooter.displayName = "CardFooter";
+
+// Export all components
 export {
   Card,
   CardHeader,
