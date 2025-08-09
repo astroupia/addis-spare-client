@@ -1,4 +1,14 @@
 <<<<<<< HEAD
+import * as React from "react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { cn } from "@/lib/utils"
+
+export const Dialog = DialogPrimitive.Root
+export const DialogTrigger = DialogPrimitive.Trigger
+
+export const DialogPortal = (props: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Portal>) => (
+=======
+<<<<<<< HEAD
 // components/ui/dialog.tsx
 
 import * as React from "react";
@@ -27,18 +37,36 @@ const Dialog = DialogPrimitive.Root
 const DialogTrigger = DialogPrimitive.Trigger
 
 const DialogPortal = (props: DialogPrimitive.DialogPortalProps) => (
+>>>>>>> 1e460ec26d3dc622f956b912de48aca3a82df869
   <DialogPrimitive.Portal {...props} />
 )
 
 DialogPortal.displayName = DialogPrimitive.Portal.displayName
+<<<<<<< HEAD
+
+export const DialogOverlay = React.forwardRef<
+=======
 >>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
 
 const DialogOverlay = React.forwardRef<
+>>>>>>> 1e460ec26d3dc622f956b912de48aca3a82df869
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
+<<<<<<< HEAD
+    className={cn("fixed inset-0 z-50 bg-black/50 backdrop-blur-sm", className)}
+    {...props}
+  />
+))
+DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
+
+export const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, ...props }, ref) => (
+=======
     className={cn(
 <<<<<<< HEAD
       "fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-all duration-100",
@@ -61,11 +89,20 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
+>>>>>>> 1e460ec26d3dc622f956b912de48aca3a82df869
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
+<<<<<<< HEAD
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-background p-6 shadow-lg duration-200",
+        "rounded-2xl sm:rounded-xl",
+        className
+      )}
+      {...props}
+    />
+=======
 <<<<<<< HEAD
         "fixed z-50 left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white dark:bg-zinc-900 p-6 shadow-lg focus:outline-none",
 =======
@@ -101,10 +138,22 @@ DialogFooter.displayName = "DialogFooter";
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
+>>>>>>> 1e460ec26d3dc622f956b912de48aca3a82df869
   </DialogPortal>
 ))
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
+<<<<<<< HEAD
+export const DialogHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn("flex flex-col space-y-2 text-center sm:text-left", className)} {...props} />
+))
+DialogHeader.displayName = "DialogHeader"
+
+export const DialogTitle = React.forwardRef<
+=======
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)} {...props} />
 )
@@ -120,6 +169,7 @@ DialogFooter.displayName = "DialogFooter"
 >>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
 
 const DialogTitle = React.forwardRef<
+>>>>>>> 1e460ec26d3dc622f956b912de48aca3a82df869
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
@@ -128,6 +178,10 @@ const DialogTitle = React.forwardRef<
     className={cn("text-lg font-semibold leading-none tracking-tight", className)}
     {...props}
   />
+<<<<<<< HEAD
+))
+DialogTitle.displayName = DialogPrimitive.Title.displayName
+=======
 <<<<<<< HEAD
 ));
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
@@ -166,3 +220,4 @@ export {
 =======
 }
 >>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
+>>>>>>> 1e460ec26d3dc622f956b912de48aca3a82df869

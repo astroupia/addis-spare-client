@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-// components/ui/textarea.tsx
-
 import React from 'react';
 
 interface TextareaProps {
@@ -69,4 +66,3 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttribu
 Textarea.displayName = "Textarea"
 
 export { Textarea }
->>>>>>> f0d0b4de36e650153fc613de3e3a748c7075f76a
