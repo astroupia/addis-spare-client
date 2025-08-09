@@ -2,7 +2,6 @@ export interface LoginFormData {
   email: string
   password: string
 }
-export type UserRole = "customer" | "seller" | "admin" | "supplier" | "support";
 
 export interface User {
   id: string

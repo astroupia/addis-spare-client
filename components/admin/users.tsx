@@ -35,7 +35,7 @@ export function AdminUsers() {
   useEffect(() => {
     const filtered = users.filter(
       (user) =>
-        user.frist_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase()),
     )
@@ -127,12 +127,12 @@ export function AdminUsers() {
                           width={40}
                           height={40}
                           src={user.avatar_url || "/placeholder.svg"}
-                          alt={`${user.frist_name} ${user.last_name}`}
+                          alt={`${user.first_name} ${user.last_name}`}
                           className="w-10 h-10 rounded-full object-cover"
                         />
                         <div>
                           <p className="font-medium">
-                            {user.frist_name} {user.last_name}
+                            {user.first_name} {user.last_name}
                           </p>
                           <p className="text-sm text-gray-500">{user.email}</p>
                         </div>

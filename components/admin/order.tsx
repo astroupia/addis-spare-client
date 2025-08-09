@@ -7,9 +7,18 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ShoppingCart, Search, MoreHorizontal, Eye, Truck, CheckCircle, XCircle } from "lucide-react"
-import { getAllOrders, updateOrderStatus } from "@/mock/mock-admin-data"
-import type { AdminOrder } from "@/mock/mock-admin-data"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { ShoppingCart, Search, MoreHorizontal, Eye, Truck, Package, CheckCircle, XCircle } from "lucide-react"
+import { getAllOrders, updateOrderStatus } from "../../mock/mock-admin-data"
+import type { AdminOrder } from "../../mock/mock-admin-data"
+import Image from "next/image"
 
 export function AdminOrders() {
   const [orders, setOrders] = useState<AdminOrder[]>([])
@@ -70,7 +79,7 @@ export function AdminOrders() {
   const getPaymentStatusBadge = (status: string) => {
     switch (status) {
       case "completed":
-        return <Badge className="bg-green-100 text-green-800">Paid</Badge>
+        return <Badge className="bg-green-100 text-green-800">Completed</Badge>
       case "pending":
         return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>
       case "failed":
@@ -131,9 +140,11 @@ export function AdminOrders() {
                 <TableRow>
                   <TableHead>Order</TableHead>
                   <TableHead>Customer</TableHead>
+                  <TableHead>Items</TableHead>
+                  <TableHead>Total</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Payment</TableHead>
-                  <TableHead>Total</TableHead>
+
                   <TableHead>Date</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -144,9 +155,8 @@ export function AdminOrders() {
                     <TableCell>
                       <div>
                         <p className="font-medium">{order.order_number}</p>
-                        <p className="text-sm text-gray-500">{order.items_count} items</p>
                         {order.tracking_number && (
-                          <p className="text-xs text-gray-400">Tracking: {order.tracking_number}</p>
+                          <p className="text-sm text-gray-500">Tracking: {order.tracking_number}</p>
                         )}
                       </div>
                     </TableCell>
@@ -156,9 +166,10 @@ export function AdminOrders() {
                         <p className="text-sm text-gray-500">{order.customer_email}</p>
                       </div>
                     </TableCell>
+                    <TableCell>{order.items_count} items</TableCell>
+                    <TableCell>${order.total_amount.toFixed(2)}</TableCell>
                     <TableCell>{getStatusBadge(order.status)}</TableCell>
                     <TableCell>{getPaymentStatusBadge(order.payment_status)}</TableCell>
-                    <TableCell>${order.total_amount.toFixed(2)}</TableCell>
                     <TableCell>{new Date(order.order_date).toLocaleDateString()}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
@@ -168,17 +179,83 @@ export function AdminOrders() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
-                          </DropdownMenuItem>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                <Eye className="mr-2 h-4 w-4" />
+                                View Details
+                              </DropdownMenuItem>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl">
+                              <DialogHeader>
+                                <DialogTitle>Order Details - {order.order_number}</DialogTitle>
+                                <DialogDescription>Complete order information and items</DialogDescription>
+                              </DialogHeader>
+                              <div className="space-y-6">
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <h4 className="font-medium mb-2">Customer Information</h4>
+                                    <p className="text-sm">{order.customer_name}</p>
+                                    <p className="text-sm text-gray-500">{order.customer_email}</p>
+                                  </div>
+                                  <div>
+                                    <h4 className="font-medium mb-2">Order Status</h4>
+                                    <div className="space-y-1">
+                                      {getStatusBadge(order.status)}
+                                      {getPaymentStatusBadge(order.payment_status)}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <h4 className="font-medium mb-2">Shipping Address</h4>
+                                  <p className="text-sm">
+                                    {order.shipping_address.street}
+                                    <br />
+                                    {order.shipping_address.city}, {order.shipping_address.state}{" "}
+                                    {order.shipping_address.zip_code}
+                                    <br />
+                                    {order.shipping_address.country}
+                                  </p>
+                                </div>
+                                <div>
+                                  <h4 className="font-medium mb-2">Order Items</h4>
+                                  <div className="space-y-2">
+                                    {order.items.map((item, index) => (
+                                      <div key={index} className="flex items-center space-x-3 p-2 border rounded">
+                                        <Image
+                                          width={32}
+                                          height={32}
+                                          src={item.image_url || "/placeholder.svg"}
+                                          alt={item.product_name}
+                                          className="w-12 h-12 rounded object-cover"
+                                        />
+                                        <div className="flex-1">
+                                          <p className="font-medium">{item.product_name}</p>
+                                          <p className="text-sm text-gray-500">
+                                            Qty: {item.quantity} × ${item.price.toFixed(2)}
+                                          </p>
+                                        </div>
+                                        <p className="font-medium">${(item.quantity * item.price).toFixed(2)}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                                {order.notes && (
+                                  <div>
+                                    <h4 className="font-medium mb-2">Notes</h4>
+                                    <p className="text-sm text-gray-600">{order.notes}</p>
+                                  </div>
+                                )}
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                           {order.status === "pending" && (
                             <DropdownMenuItem
                               onClick={() => handleStatusChange(order.id, "processing")}
                               className="text-blue-600"
                             >
-                              <Truck className="mr-2 h-4 w-4" />
-                              Start Processing
+                              <Package className="mr-2 h-4 w-4" />
+                              Mark Processing
                             </DropdownMenuItem>
                           )}
                           {order.status === "processing" && (
@@ -187,7 +264,7 @@ export function AdminOrders() {
                               className="text-purple-600"
                             >
                               <Truck className="mr-2 h-4 w-4" />
-                              Mark as Shipped
+                              Mark Shipped
                             </DropdownMenuItem>
                           )}
                           {order.status === "shipped" && (
@@ -196,7 +273,7 @@ export function AdminOrders() {
                               className="text-green-600"
                             >
                               <CheckCircle className="mr-2 h-4 w-4" />
-                              Mark as Delivered
+                              Mark Delivered
                             </DropdownMenuItem>
                           )}
                           {(order.status === "pending" || order.status === "processing") && (

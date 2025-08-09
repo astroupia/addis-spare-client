@@ -3,15 +3,15 @@ import { AdminLoginForm } from "./admin-login-form"
 
 export const metadata: Metadata = {
   title: "Admin Login | Addis Spare Parts",
-  description: "Secure admin login for managing the marketplace",
+  description: "Secure admin login for Addis Spare Parts marketplace",
 }
 
 export default function AdminLoginPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
         <AdminLoginForm />
       </div>
-    </main>
+    </div>
   )
 }
