@@ -17,3 +17,20 @@ export interface Product {
   seller_id: string;
   is_available: boolean;
 }
+
+export type CompatibilityEntry = {
+  make: string;
+  model: string;
+  year: number;
+};
+
+
+export interface SearchResult {
+  product: Product
+}
+
+export interface SearchResponse {
+  results: SearchResult[]
+  total: number
+}
+
