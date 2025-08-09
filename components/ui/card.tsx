@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import * as React from "react";
-import { cn } from "@/lib/utils";
-
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        "rounded-2xl border bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900",
-=======
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -19,13 +8,11 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card"
       className={cn(
         "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
->>>>>>> develop
         className
       )}
       {...props}
     />
   )
-<<<<<<< HEAD
 );
 Card.displayName = "Card";
 
@@ -73,9 +60,6 @@ const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
     />
   )
 );
-CardContent.displayName = "CardContent";
-=======
-}
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -142,21 +126,14 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     />
   )
 }
->>>>>>> develop
 
 export {
   Card,
   CardHeader,
-<<<<<<< HEAD
   CardTitle,
   CardDescription,
   CardContent
-};
-=======
   CardFooter,
   CardTitle,
   CardAction,
-  CardDescription,
-  CardContent,
 }
->>>>>>> develop
