@@ -1,0 +1,105 @@
+{
+  "results": [
+    {
+      "product": {
+        "id": "1",
+        "name": "Brake Pad Set - Premium",
+        "description": "High-performance ceramic brake pads for superior stopping power and reduced brake dust. Compatible with most sedan models.",
+        "price": 49.99,
+        "category": "Brakes",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "2",
+        "name": "Oil Filter - Standard",
+        "description": "Standard replacement oil filter that removes contaminants from engine oil. Fits most passenger vehicles.",
+        "price": 12.99,
+        "category": "Filters",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "3",
+        "name": "Spark Plug Set - Iridium",
+        "description": "Long-lasting iridium spark plugs for improved fuel efficiency and engine performance. Set of 4.",
+        "price": 32.5,
+        "category": "Ignition",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "4",
+        "name": "Brake Rotor - Front",
+        "description": "Precision-engineered front brake rotor with anti-rust coating for extended life and optimal braking performance.",
+        "price": 78.95,
+        "category": "Brakes",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "5",
+        "name": "Air Filter - Performance",
+        "description": "High-flow air filter that improves engine breathing and horsepower. Washable and reusable.",
+        "price": 29.99,
+        "category": "Filters",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "6",
+        "name": "Brake Fluid - DOT 4",
+        "description": "High-temperature brake fluid with superior moisture resistance. Meets DOT 4 specifications.",
+        "price": 15.75,
+        "category": "Fluids",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "7",
+        "name": "Timing Belt Kit",
+        "description": "Complete timing belt kit including tensioners and water pump. Essential for scheduled maintenance.",
+        "price": 129.99,
+        "category": "Engine",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "8",
+        "name": "Shock Absorber - Rear",
+        "description": "Gas-charged rear shock absorber for improved handling and ride comfort. Sold individually.",
+        "price": 89.5,
+        "category": "Suspension",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "9",
+        "name": "Brake Caliper - Remanufactured",
+        "description": "Professionally remanufactured brake caliper with new seals and hardware. Exchange required.",
+        "price": 67.25,
+        "category": "Brakes",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    },
+    {
+      "product": {
+        "id": "10",
+        "name": "Alternator - 120A",
+        "description": "New 120-amp alternator for reliable electrical system performance. Includes pulley and voltage regulator.",
+        "price": 175.0,
+        "category": "Electrical",
+        "image": "/placeholder.svg?height=300&width=500"
+      }
+    }
+  ],
+  "total": 10
+}

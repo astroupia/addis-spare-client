@@ -1,5 +1,6 @@
 // types/message.ts
 
+
 export interface Seller {
   id: string
   name: string

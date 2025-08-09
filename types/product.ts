@@ -16,3 +16,21 @@ export interface Product {
   created_at: string
   updated_at: string
 }
+
+
+export type CompatibilityEntry = {
+  make: string;
+  model: string;
+  year: number;
+};
+
+
+export interface SearchResult {
+  product: Product
+}
+
+export interface SearchResponse {
+  results: SearchResult[]
+  total: number
+}
+

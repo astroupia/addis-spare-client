@@ -11,8 +11,9 @@ const mockProducts: Product[] = [
     category: "Brakes",
     price: 49.99,
     images: [
-      "/placeholder.svg?height=400&width=400&text=Brake+Pads",
-      "/placeholder.svg?height=400&width=400&text=Brake+Pads+2",
+      "/placeholder.svg?height=600&width=600&text=Brake+Pads+Front+View",
+      "/placeholder.svg?height=600&width=600&text=Brake+Pads+Side+View",
+      "/placeholder.svg?height=600&width=600&text=Brake+Pads+Detail",
     ],
     attributes: {
       material: "Ceramic",
@@ -42,7 +43,10 @@ const mockProducts: Product[] = [
     brand: "Bosch",
     category: "Engine",
     price: 12.99,
-    images: ["/placeholder.svg?height=400&width=400&text=Oil+Filter"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=Oil+Filter",
+      "/placeholder.svg?height=600&width=600&text=Oil+Filter+Cross+Section",
+    ],
     attributes: {
       filtration: "99%",
       thread: "3/4-16",
@@ -70,7 +74,10 @@ const mockProducts: Product[] = [
     brand: "ACDelco",
     category: "Electrical",
     price: 189.99,
-    images: ["/placeholder.svg?height=400&width=400&text=Alternator"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=Alternator+Front",
+      "/placeholder.svg?height=600&width=600&text=Alternator+Back",
+    ],
     attributes: {
       output: "130 Amp",
       voltage: "12V",
@@ -97,7 +104,11 @@ const mockProducts: Product[] = [
     brand: "NGK",
     category: "Engine",
     price: 32.99,
-    images: ["/placeholder.svg?height=400&width=400&text=Spark+Plugs"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=Spark+Plug",
+      "/placeholder.svg?height=600&width=600&text=Spark+Plug+Side",
+      "/placeholder.svg?height=600&width=600&text=Spark+Plug+Set",
+    ],
     attributes: {
       material: "Iridium",
       gap: "0.044 inch",
@@ -126,7 +137,10 @@ const mockProducts: Product[] = [
     brand: "Valvoline",
     category: "Transmission",
     price: 24.99,
-    images: ["/placeholder.svg?height=400&width=400&text=Transmission+Fluid"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=Transmission+Fluid",
+      "/placeholder.svg?height=600&width=600&text=Transmission+Fluid+Label",
+    ],
     attributes: {
       type: "Synthetic",
       capacity: "1 Quart",
@@ -153,7 +167,10 @@ const mockProducts: Product[] = [
     brand: "K&N",
     category: "Engine",
     price: 19.99,
-    images: ["/placeholder.svg?height=400&width=400&text=Air+Filter"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=Air+Filter",
+      "/placeholder.svg?height=600&width=600&text=Air+Filter+Side",
+    ],
     attributes: {
       type: "Reusable",
       shape: "Panel",
@@ -180,7 +197,10 @@ const mockProducts: Product[] = [
     brand: "Denso",
     category: "Cooling",
     price: 129.99,
-    images: ["/placeholder.svg?height=400&width=400&text=Radiator"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=Radiator",
+      "/placeholder.svg?height=600&width=600&text=Radiator+Side",
+    ],
     attributes: {
       material: "Aluminum/Plastic",
       rows: "2",
@@ -207,7 +227,10 @@ const mockProducts: Product[] = [
     brand: "Denso",
     category: "Exhaust",
     price: 59.99,
-    images: ["/placeholder.svg?height=400&width=400&text=O2+Sensor"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=O2+Sensor",
+      "/placeholder.svg?height=600&width=600&text=O2+Sensor+Wiring",
+    ],
     attributes: {
       position: "Upstream",
       wires: "4",
@@ -234,7 +257,10 @@ const mockProducts: Product[] = [
     brand: "Monroe",
     category: "Suspension",
     price: 79.99,
-    images: ["/placeholder.svg?height=400&width=400&text=Shock+Absorber"],
+    images: [
+      "/placeholder.svg?height=600&width=600&text=Shock+Absorber",
+      "/placeholder.svg?height=600&width=600&text=Shock+Absorber+Side",
+    ],
     attributes: {
       type: "Gas-Charged",
       position: "Front",
@@ -371,6 +397,15 @@ export async function fetchProducts({
     products: paginatedProducts,
     total: filteredProducts.length,
   }
+}
+
+// Fetch single product by slug (ID)
+export async function fetchProductBySlug(slug: string): Promise<Product | null> {
+  // Simulate network delay
+  await new Promise((resolve) => setTimeout(resolve, 300))
+
+  const product = mockProducts.find((p) => p._id === slug)
+  return product || null
 }
 
 // Fetch categories
