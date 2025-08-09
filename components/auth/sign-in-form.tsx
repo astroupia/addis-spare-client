@@ -1,214 +1,214 @@
 "use client"
 
 import type React from "react"
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Input } from "@/components/ui/input"
+import { Eye, EyeOff, Mail, Lock, ArrowRight, AlertCircle, CheckCircle } from "lucide-react"
+import { useTheme } from "next-themes"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Mail, Lock } from "lucide-react"
-import mockUsers from "@/mock/user.json" assert { type: "json" }
+import { Checkbox } from "@/components/ui/checkbox" 
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import type { LoginCredentials } from "@/types/auth"
+import { getUserByEmail, verifyPassword } from "@/mock/mock-auth-data"
 
+interface LoginFormProps {
+  onLoginSuccess?: (user_id: string) => void
+  className?: string
+}
 
-
-export default function SignInForm() {
-  const router = useRouter()
-  const [is_loading, setIsLoading] = useState(false)
-  const [form_data, setFormData] = useState({
+export function LoginForm({ onLoginSuccess, className }: LoginFormProps) {
+  const [credentials, setCredentials] = useState<LoginCredentials>({
     email: "",
     password: "",
     remember_me: false,
   })
+  const [show_password, setShowPassword] = useState<boolean>(false)
+  const [is_loading, setIsLoading] = useState<boolean>(false)
+  const [error_message, setErrorMessage] = useState<string>("")
+  const [success_message, setSuccessMessage] = useState<string>("")
+  const router = useRouter()
+  const { theme } = useTheme()
+  const is_dark = theme === "dark"
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData({
-      ...form_data,
-      [name]: value,
-    })
-  }
-
-  const handleCheckboxChange = (checked: boolean) => {
-    setFormData({
-      ...form_data,
-      remember_me: checked,
-    })
-  }
-
-  const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return regex.test(email)
+    setCredentials((prev) => ({ ...prev, [name]: value }))
+    setErrorMessage("")
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Validation
-    if (!validateEmail(form_data.email)) {
-      alert("Please enter a valid email address")
-      return
-    }
-
-    if (form_data.password.length < 1) {
-      alert("Please enter your password")
-      return
-    }
-
     setIsLoading(true)
+    setErrorMessage("")
+    setSuccessMessage("")
 
     try {
-      // In a real app, you would call your API here
-      // For now, we'll simulate an API call with mock data
+      // Simulate API delay
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      // Simulate fetching user data from mock
-      
-
-      const user = mockUsers.find((user) => user.email === form_data.email)
+      // Mock authentication logic
+      const user = getUserByEmail(credentials.email)
 
       if (!user) {
         throw new Error("Invalid email or password")
       }
 
-      // In a real app, you would verify the password hash here
-      // For demo purposes, we'll just simulate a successful login
-
-      console.log("User logged in:", user)
-
-      // Store user session (in a real app, this would be a JWT token or session cookie)
-      if (typeof window !== "undefined") {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-          }),
-        )
+      if (user.status !== "active") {
+        throw new Error("Account is suspended or pending verification")
       }
 
-      // Redirect to dashboard after successful login
-      router.push("/dashboard")
+      if (!verifyPassword(credentials.password, user.password_hash)) {
+        throw new Error("Invalid email or password")
+      }
+
+      // Successful login
+      setSuccessMessage("Login successful! Redirecting...")
+
+      // Store user session (in real app, use secure session management)
+      localStorage.setItem(
+        "user_session",
+        JSON.stringify({
+          user_id: user.id,
+          email: user.email,
+          name: `${user.first_name} ${user.last_name}`,
+          role: user.role,
+          expires_at: new Date(Date.now() + (credentials.remember_me ? 30 : 1) * 24 * 60 * 60 * 1000).toISOString(),
+        }),
+      )
+
+      onLoginSuccess?.(user.id)
+
+      setTimeout(() => {
+        router.push("/dashboard")
+      }, 1500)
     } catch (error) {
-      console.error("Login error:", error)
-      alert("Invalid email or password. Please try again.")
+      setErrorMessage(error instanceof Error ? error.message : "Login failed")
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="john@example.com"
-            value={form_data.email}
-            onChange={handleChange}
-            className="pl-10"
-            required
-          />
-        </div>
+    <div className={cn("w-full max-w-md mx-auto", className)}>
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
+        <p className={cn("text-base", is_dark ? "text-gray-400" : "text-gray-600")}>
+          Sign in to your account to continue
+        </p>
       </div>
 
-      <div className="space-y-2">
-        <div className="flex justify-between items-center">
+      {error_message && (
+        <Alert className="mb-6 border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20">
+          <AlertCircle className="h-4 w-4 text-red-600" />
+          <AlertDescription className="text-red-700 dark:text-red-400">{error_message}</AlertDescription>
+        </Alert>
+      )}
+
+      {success_message && (
+        <Alert className="mb-6 border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-900/20">
+          <CheckCircle className="h-4 w-4 text-green-600" />
+          <AlertDescription className="text-green-700 dark:text-green-400">{success_message}</AlertDescription>
+        </Alert>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email Address</Label>
+          <div className="relative">
+            <Mail className={cn("absolute left-3 top-3 h-5 w-5", is_dark ? "text-gray-400" : "text-gray-500")} />
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={credentials.email}
+              onChange={handleInputChange}
+              placeholder="john@example.com"
+              className={cn("pl-10", is_dark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300")}
+              required
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Link href="/forgot-password" className="text-sm text-[#670D2F] hover:text-[#3A0519]">
+          <div className="relative">
+            <Lock className={cn("absolute left-3 top-3 h-5 w-5", is_dark ? "text-gray-400" : "text-gray-500")} />
+            <Input
+              id="password"
+              name="password"
+              type={show_password ? "text" : "password"}
+              value={credentials.password}
+              onChange={handleInputChange}
+              placeholder="Enter your password"
+              className={cn("pl-10 pr-10", is_dark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300")}
+              required
+            />
+            <button type="button" onClick={() => setShowPassword(!show_password)} className="absolute right-3 top-3">
+              {show_password ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="remember_me"
+              checked={credentials.remember_me}
+              onCheckedChange={(checked) => setCredentials((prev) => ({ ...prev, remember_me: checked as boolean }))}
+            />
+            <Label htmlFor="remember_me" className="text-sm">
+              Remember me for 30 days
+            </Label>
+          </div>
+          <button
+            type="button"
+            className="text-sm text-[#670D2F] hover:underline"
+            onClick={() => router.push("/forgot-password")}
+          >
             Forgot password?
-          </Link>
+          </button>
         </div>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            value={form_data.password}
-            onChange={handleChange}
-            className="pl-10"
-            required
-          />
-        </div>
+
+        <Button type="submit" disabled={is_loading} className="w-full bg-[#670D2F] hover:bg-[#3A0519] text-white">
+          {is_loading ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+              Signing in...
+            </>
+          ) : (
+            <>
+              Sign In
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </>
+          )}
+        </Button>
+      </form>
+
+      <div className="mt-6 text-center">
+        <p className={cn("text-sm", is_dark ? "text-gray-400" : "text-gray-600")}>
+          Don&apos;t have an account?{" "}
+          <button onClick={() => router.push("/register")} className="text-[#670D2F] hover:underline font-medium">
+            Sign up here
+          </button>
+        </p>
       </div>
 
-      <div className="flex items-center space-x-2">
-        <Checkbox
-          id="remember_me"
-          checked={form_data.remember_me}
-          onCheckedChange={handleCheckboxChange}
-          className="data-[state=checked]:bg-[#670D2F] data-[state=checked]:border-[#670D2F]"
-        />
-        <label
-          htmlFor="remember_me"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Remember me
-        </label>
-      </div>
-
-      <Button type="submit" className="w-full bg-[#670D2F] hover:bg-[#3A0519] text-white" disabled={is_loading}>
-        {is_loading ? "Signing In..." : "Sign In"}
-      </Button>
-
-      <div className="text-center text-sm text-gray-500">
-        <p className="my-4">OR CONTINUE WITH</p>
-        <div className="flex gap-4 justify-center">
-          <Button
-            type="button"
-            variant="outline"
-            className="flex-1 flex items-center justify-center gap-2"
-            onClick={() => alert("Google sign in not implemented")}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" className="w-5 h-5">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-              />
-            </svg>
-            Google
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="flex-1 flex items-center justify-center gap-2"
-            onClick={() => alert("Facebook sign in not implemented")}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              className="w-5 h-5 text-[#1877F2]"
-              fill="currentColor"
-            >
-              <path d="M9.19795 21.5H13.198V13.4901H16.8021L17.198 9.50977H13.198V7.5C13.198 6.94772 13.6457 6.5 14.198 6.5H17.198V2.5H14.198C11.4365 2.5 9.19795 4.73858 9.19795 7.5V9.50977H7.19795L6.80206 13.4901H9.19795V21.5Z" />
-            </svg>
-            Facebook
-          </Button>
+      {/* Demo Credentials */}
+      <div className="mt-8 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+        <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">Demo Credentials:</h4>
+        <div className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+          <p>
+            <strong>Email:</strong> john.doe@example.com
+          </p>
+          <p>
+            <strong>Password:</strong> password123
+          </p>
         </div>
       </div>
-    </form>
+    </div>
   )
 }

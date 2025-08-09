@@ -91,14 +91,25 @@ export default function SignUpForm() {
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       const new_user: Partial<User> = {
-        name: form_data.name,
+        // Remove 'name' if not present in User type, or add it to the User type if needed.
         email: form_data.email,
         role: form_data.role as "customer" | "supplier" | "admin" | "support",
-        contact: form_data.contact,
+        // contact: form_data.contact, // Removed because 'contact' does not exist in User type
         status: "pending",
-        preferences: {},
+        preferences: {
+          language: "en",
+          currency: "USD",
+          notifications: {
+            email: true,
+            sms: false,
+            push: true,
+          },
+          theme: "light", // or "dark" or "system"
+        },
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
+        // If User type has a 'full_name' or similar property, you can map it here:
+        // full_name: form_data.name,
       }
 
       console.log("User registered:", new_user)
