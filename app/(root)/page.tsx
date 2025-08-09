@@ -20,7 +20,7 @@ export default async function ProductsPage() {
         <div className="max-w-[1200px] mx-auto px-4 py-4">
           <SearchHeader makes={makes} models={models} years={years} />
         </div>
-      </div>
+      </div> 
 
       {/* Main content with sticky sidebar */}
       <div className="max-w-[1200px] mx-auto px-4">
