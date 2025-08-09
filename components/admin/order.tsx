@@ -19,6 +19,7 @@ import { ShoppingCart, Search, MoreHorizontal, Eye, Truck, Package, CheckCircle,
 import { getAllOrders, updateOrderStatus } from "../../mock/mock-admin-data"
 import type { AdminOrder } from "../../mock/mock-admin-data"
 import Image from "next/image"
+
 export function AdminOrders() {
   const [orders, setOrders] = useState<AdminOrder[]>([])
   const [filteredOrders, setFilteredOrders] = useState<AdminOrder[]>([])
@@ -143,6 +144,7 @@ export function AdminOrders() {
                   <TableHead>Total</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Payment</TableHead>
+
                   <TableHead>Date</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>

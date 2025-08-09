@@ -1,7 +1,5 @@
 import type { User } from "@/types/auth"
 
-// --- INTERFACES ---
-
 export interface AdminAnalytics {
   overview: {
     total_users: number
@@ -102,8 +100,6 @@ export interface AdminUser extends User {
   }>
   privileges?: string[] // <-- Admin privileges
 }
-
-// --- MOCK DATA ---
 
 export const mock_admin_analytics: AdminAnalytics = {
   overview: {
@@ -392,7 +388,6 @@ export interface AdminProduct {
   rating: number
   reviews_count: number
 }
-
 // Mock Admin Products
 export const mock_admin_products: AdminProduct[] = [
   {

@@ -1,0 +1,76 @@
+{
+  "results": [
+    {
+      "product": {
+        "id": 1,
+        "name": "Brake Pad Set",
+        "description": "High-performance brake pads for sedans",
+        "price": 45.99,
+        "image": "/images/parts/brake-pads.jpg"
+      }
+    },
+    {
+      "product": {
+        "id": 2,
+        "name": "Engine Oil Filter",
+        "description": "Durable oil filter compatible with multiple car models",
+        "price": 15.49,
+        "image": "/images/parts/oil-filter.jpg"
+      }
+    },
+    {
+      "product": {
+        "id": 3,
+        "name": "Radiator Hose",
+        "description": "Flexible rubber radiator hose for cooling systems",
+        "price": 22.75,
+        "image": "/images/parts/radiator-hose.jpg"
+      }
+    },
+    {
+      "product": {
+        "id": 4,
+        "name": "Spark Plug Set",
+        "description": "Premium spark plugs for better fuel efficiency",
+        "price": 35.60,
+        "image": "/images/parts/spark-plugs.jpg"
+      }
+    },
+    {
+      "product": {
+        "id": 5,
+        "name": "Air Filter",
+        "description": "High-flow air filter to improve engine performance",
+        "price": 18.20,
+        "image": "/images/parts/air-filter.jpg"
+      }
+    },
+    {
+      "product": {
+        "id": 6,
+        "name": "Headlight Assembly",
+        "description": "LED headlight assembly for clear night driving",
+        "price": 120.00,
+        "image": "/images/parts/headlight.jpg"
+      }
+    },
+    {
+      "product": {
+        "id": 7,
+        "name": "Front Bumper Cover",
+        "description": "Durable front bumper cover for SUVs",
+        "price": 250.00,
+        "image": "/images/parts/front-bumper.jpg"
+      }
+    },
+    {
+      "product": {
+        "id": 8,
+        "name": "Side Mirror Replacement",
+        "description": "Heated side mirror with electronic adjustment",
+        "price": 85.50,
+        "image": "/images/parts/side-mirror.jpg"
+      }
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import {
   CheckCircle,
 } from "lucide-react"
 import { getAdminAnalytics, AdminAnalytics, ReportedContent } from "@/mock/mock-admin-data"
+
 import Image from "next/image"
 
 export function AdminOverview() {
@@ -54,6 +55,7 @@ export function AdminOverview() {
 
   const pendingReports = reports.filter((r) => r.status === "pending" || r.status === "under_review")
   const criticalReports = reports.filter((r) => r.priority === "critical")
+
 
   return (
     <div className="space-y-6">
@@ -245,6 +247,7 @@ export function AdminOverview() {
                       <span>{product.sales_count} sales</span>
                       <span>${product.revenue.toFixed(2)} revenue</span>
                     </div>
+
                   </div>
                 </div>
               ))}
@@ -254,7 +257,6 @@ export function AdminOverview() {
       </div>
 
       {/* Quick Actions */}
-     
     </div>
   )
 }

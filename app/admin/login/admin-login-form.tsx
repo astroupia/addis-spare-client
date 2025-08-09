@@ -20,7 +20,6 @@ function verifyPassword(inputPassword: string, storedPasswordHash: string): bool
   return inputPassword === storedPasswordHash
 }
 
-
 type LoginCredentials = {
   email: string
   password: string

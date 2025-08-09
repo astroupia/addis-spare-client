@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { LogOut, Shield, AlertTriangle } from "lucide-react"
-import { AdminOverview } from "@/components/admin/overview"
+import { LogOut, Shield } from "lucide-react"
+import { AdminOverview } from "@/components/admin/overview"  
 import { AdminUsers } from "@/components/admin/users"
 import { AdminProducts } from "@/components/admin/product"
 import { AdminOrders } from "@/components/admin/order"
@@ -29,7 +29,19 @@ export function AdminDashboardClient() {
   const [pendingReports, setPendingReports] = useState(0)
   const router = useRouter()
 
+
+export function AdminDashboardClient() {
+  const [activeTab, setActiveTab] = useState("overview")
+  interface AdminUserSession {
+    name: string
+    role: string
+    [key: string]: unknown
+  }
+  const [adminUser, setAdminUser] = useState<AdminUserSession | null>(null)
+  const router = useRouter()
+
   useEffect(() => {
+    // Check if user is logged in and is admin
     const session = localStorage.getItem("user_session")
     if (!session) {
       router.push("/login")
@@ -47,11 +59,12 @@ export function AdminDashboardClient() {
     const reports = getAllReportedContent()
     const pending = reports.filter((r) => r.status === "pending" || r.status === "under_review").length
     setPendingReports(pending)
+
   }, [router])
 
   const handleLogout = () => {
     localStorage.removeItem("user_session")
-    router.push("admin/login")
+    router.push("/admin/login")
   }
 
   if (!adminUser) {
@@ -118,6 +131,7 @@ export function AdminDashboardClient() {
               <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
             </TabsList>
           </div>
+
 
           <TabsContent value="overview" className="space-y-6">
             <AdminOverview />
