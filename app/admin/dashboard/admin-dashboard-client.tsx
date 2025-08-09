@@ -6,38 +6,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { LogOut, Shield } from "lucide-react"
-import { AdminOverview } from "@/components/admin/overview"  
+import { AdminOverview } from "@/components/admin/overview"
 import { AdminUsers } from "@/components/admin/users"
 import { AdminProducts } from "@/components/admin/product"
 import { AdminOrders } from "@/components/admin/order"
 import { AdminAnalytics } from "@/components/admin/analytics"
 import { AdminModeration } from "@/components/admin/moderation"
-import { getAllReportedContent } from "@/mock/mock-admin-data"
+import { AdminSettings } from "@/components/admin/setting"
 
-
-interface AdminUserSession {
-  id: string
-  name: string
-  role: string
-  [key: string]: unknown // Add more fields as needed
+interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'superadmin' | 'staff';
+  // Add other fields as needed
 }
 
-
 export function AdminDashboardClient() {
   const [activeTab, setActiveTab] = useState("overview")
-  const [adminUser, setAdminUser] = useState<AdminUserSession | null>(null)
-  const [pendingReports, setPendingReports] = useState(0)
-  const router = useRouter()
-
-
-export function AdminDashboardClient() {
-  const [activeTab, setActiveTab] = useState("overview")
-  interface AdminUserSession {
-    name: string
-    role: string
-    [key: string]: unknown
-  }
-  const [adminUser, setAdminUser] = useState<AdminUserSession | null>(null)
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const router = useRouter()
 
   useEffect(() => {
@@ -64,7 +51,7 @@ export function AdminDashboardClient() {
 
   const handleLogout = () => {
     localStorage.removeItem("user_session")
-    router.push("/admin/login")
+    router.push("/login")
   }
 
   if (!adminUser) {
@@ -114,25 +101,15 @@ export function AdminDashboardClient() {
       {/* Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <div className="overflow-x-auto">
-            <TabsList className="flex flex-wrap gap-2 w-full min-w-[600px] sm:min-w-0">
-              <TabsTrigger value="overview" className="text-sm">Overview</TabsTrigger>
-              <TabsTrigger value="users" className="text-sm">Users</TabsTrigger>
-              <TabsTrigger value="products" className="text-sm">Products</TabsTrigger>
-              <TabsTrigger value="orders" className="text-sm">Orders</TabsTrigger>
-              <TabsTrigger value="moderation" className="relative text-sm">
-                Moderation
-                {pendingReports > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 text-xs bg-red-500 hover:bg-red-500">
-                    {pendingReports}
-                  </Badge>
-                )}
-              </TabsTrigger>
-              <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
-            </TabsList>
-          </div>
-
-
+          <TabsList className="grid w-full grid-cols-7">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="moderation">Moderation</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
           <TabsContent value="overview" className="space-y-6">
             <AdminOverview />
           </TabsContent>
@@ -150,6 +127,14 @@ export function AdminDashboardClient() {
           </TabsContent>
           <TabsContent value="analytics" className="space-y-6">
             <AdminAnalytics />
+          </TabsContent>
+
+          <TabsContent value="moderation" className="space-y-6">
+            <AdminModeration />
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <AdminSettings />
           </TabsContent>
         </Tabs>
       </main>
