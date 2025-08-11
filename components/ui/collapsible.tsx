@@ -1,33 +1,33 @@
 "use client"
 
-import * as React from "react"
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
-import { cn } from "@/lib/utils"
 
-const Collapsible = CollapsiblePrimitive.Root
+function Collapsible({
+  ...props
+}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
+  return <CollapsiblePrimitive.Root data-slot="collapsible" {...props} />
+}
 
-const CollapsibleTrigger = React.forwardRef<
-  React.ElementRef<typeof CollapsiblePrimitive.CollapsibleTrigger>,
-  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleTrigger>
->(({ className, ...props }, ref) => (
-  <CollapsiblePrimitive.CollapsibleTrigger
-    ref={ref}
-    className={cn("cursor-pointer", className)}
-    {...props}
-  />
-))
-CollapsibleTrigger.displayName = CollapsiblePrimitive.CollapsibleTrigger.displayName
+function CollapsibleTrigger({
+  ...props
+}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {
+  return (
+    <CollapsiblePrimitive.CollapsibleTrigger
+      data-slot="collapsible-trigger"
+      {...props}
+    />
+  )
+}
 
-const CollapsibleContent = React.forwardRef<
-  React.ElementRef<typeof CollapsiblePrimitive.CollapsibleContent>,
-  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleContent>
->(({ className, ...props }, ref) => (
-  <CollapsiblePrimitive.CollapsibleContent
-    ref={ref}
-    className={cn("overflow-hidden transition-all data-[state=open]:animate-slide-down data-[state=closed]:animate-slide-up", className)}
-    {...props}
-  />
-))
-CollapsibleContent.displayName = CollapsiblePrimitive.CollapsibleContent.displayName
+function CollapsibleContent({
+  ...props
+}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {
+  return (
+    <CollapsiblePrimitive.CollapsibleContent
+      data-slot="collapsible-content"
+      {...props}
+    />
+  )
+}
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent }

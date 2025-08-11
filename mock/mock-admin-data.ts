@@ -67,6 +67,7 @@ export interface ReportedContent {
 export interface AdminUser extends User {
   id: string
   email: string
+  name: string
   password_hash: string
   first_name: string
   last_name: string
@@ -88,7 +89,7 @@ export interface AdminUser extends User {
       sms: boolean
       push: boolean
     }
-    theme: string
+    theme: "light" | "dark" | "system"
   }
   total_orders: number
   total_spent: number
@@ -196,15 +197,15 @@ export const mock_admin_analytics: AdminAnalytics = {
 
 export const mock_admin_users: AdminUser[] = [
   {
-    _id: "admin_001",
+    // _id: "admin_001",
     id: "admin_001",
     name: "Super Admin",
-    contact: {
-      phone: "+1-555-0000",
-      address: "1 Admin Plaza",
-      city: "Addis Ababa",
-      country: "Ethiopia",
-    },
+    // contact: {
+    //   phone: "+1-555-0000",
+    //   address: "1 Admin Plaza",
+    //   city: "Addis Ababa",
+    //   country: "Ethiopia",
+    // },
     email: "admin@addisparts.com",
     password_hash: "password123", // In real app, use hashed password
     first_name: "Super",
@@ -239,15 +240,15 @@ export const mock_admin_users: AdminUser[] = [
     ],
   },
   {
-    _id: "user_001",
+    // _id: "user_001",
     id: "user_001",
     name: "John Doe",
-    contact: {
-      phone: "+1-555-0123",
-      address: "123 Main St",
-      city: "Springfield",
-      country: "USA",
-    },
+    // contact: {
+    //   phone: "+1-555-0123",
+    //   address: "123 Main St",
+    //   city: "Springfield",
+    //   country: "USA",
+    // },
     email: "john.doe@example.com",
     password_hash: "password123",
     first_name: "John",
@@ -280,15 +281,15 @@ export const mock_admin_users: AdminUser[] = [
     ],
   },
   {
-    _id: "user_002",
+    // _id: "user_002",
     id: "user_002",
     name: "Jane Smith",
-    contact: {
-      phone: "+1-555-0456",
-      address: "789 Maple Ave",
-      city: "Chicago",
-      country: "USA",
-    },
+    // contact: {
+    //   phone: "+1-555-0456",
+    //   address: "789 Maple Ave",
+    //   city: "Chicago",
+    //   country: "USA",
+    // },
     email: "jane.smith@example.com",
     password_hash: "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/RK.s5uDxy",
     first_name: "Jane",
@@ -321,15 +322,15 @@ export const mock_admin_users: AdminUser[] = [
     ],
   },
   {
-    _id: "user_004",
+    // _id: "user_004",
     id: "user_004",
     name: "Mike Wilson",
-    contact: {
-      phone: "+1-555-0789",
-      address: "123 Elm St",
-      city: "Milwaukee",
-      country: "USA",
-    },
+    // contact: {
+    //   phone: "+1-555-0789",
+    //   address: "123 Elm St",
+    //   city: "Milwaukee",
+    //   country: "USA",
+    // },
     email: "mike.wilson@example.com",
     password_hash: "$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj/RK.s5uDxy",
     first_name: "Mike",

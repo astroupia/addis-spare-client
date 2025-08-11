@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import type { SearchResponse, HighlightedText } from "@/types/search";
+import type { SearchResponse, HighlightedText, SearchResult } from "@/types/search";
 import type { Product } from "@/types/product";
 import productsDataRaw from "@/mock/search.json";
 
@@ -65,10 +65,23 @@ export async function GET(request: NextRequest) {
         };
       });
 
+
+    const newProduct : Product = {
+      id: "",
+      name: "",
+      price: 0,
+      category: "",
+      image_url: "",
+      stock_count: 0,
+      sku: "",
+      created_at: "",
+      updated_at: ""
+    };
+    const sr : SearchResult[] = [];
     const response: SearchResponse = {
-      results,
+      results: sr,
       total: results.length,
-      product: results.length > 0 ? results[0].product : {} as Product,
+      product: newProduct,
     };
 
     return NextResponse.json(response);

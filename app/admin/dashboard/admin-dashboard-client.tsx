@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { LogOut, Shield } from "lucide-react"
 import { AdminOverview } from "@/components/admin/overview"
 import { AdminUsers } from "@/components/admin/users"
@@ -13,6 +12,8 @@ import { AdminOrders } from "@/components/admin/order"
 import { AdminAnalytics } from "@/components/admin/analytics"
 import { AdminModeration } from "@/components/admin/moderation"
 import { AdminSettings } from "@/components/admin/setting"
+import { AlertTriangle } from "lucide-react"
+import { getAllReportedContent } from "@/mock/mock-admin-data"
 
 interface AdminUser {
   id: string;
@@ -25,6 +26,7 @@ interface AdminUser {
 export function AdminDashboardClient() {
   const [activeTab, setActiveTab] = useState("overview")
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
+  const [ pendingReports, setPendingReports ] = useState<number>(0);
   const router = useRouter()
 
   useEffect(() => {
@@ -43,10 +45,10 @@ export function AdminDashboardClient() {
 
     setAdminUser(parsedSession)
 
+
     const reports = getAllReportedContent()
     const pending = reports.filter((r) => r.status === "pending" || r.status === "under_review").length
     setPendingReports(pending)
-
   }, [router])
 
   const handleLogout = () => {

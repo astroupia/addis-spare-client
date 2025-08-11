@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Package, Search, MoreHorizontal, Eye, Edit, Trash2, Star } from "lucide-react"
 import { getAllProducts, updateProductStatus } from "@/mock/mock-admin-data"
 import type { AdminProduct } from "@/mock/mock-admin-data"
-import Image from "next/image" 
+import Image from "next/image"
 
 export function AdminProducts() {
   const [products, setProducts] = useState<AdminProduct[]>([])
