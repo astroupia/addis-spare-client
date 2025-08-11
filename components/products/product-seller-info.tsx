@@ -26,7 +26,7 @@ export function ProductSellerInfo({ seller, className }: ProductSellerInfoProps)
       {/* Seller Profile */}
       <div className="flex items-center space-x-4">
         <Image
-          src={seller.profileImage}
+          src={seller.avatar_url||""}
           alt={seller.name}
           width={64}
           height={64}

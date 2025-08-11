@@ -1,3 +1,5 @@
+import { UserRole } from "./setting"
+
 export interface LoginFormData {
   email: string
   password: string
@@ -15,7 +17,7 @@ export interface User {
   phone_verified: boolean
   two_factor_enabled: boolean
   two_factor_secret?: string
-  role: UserRole;
+  role: string;
   status: "active" | "suspended" | "pending"
   last_login?: string
   created_at: string

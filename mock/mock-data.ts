@@ -16,7 +16,7 @@ export function getMockProducts(): ProductMessage[] {
         name: "Mekdes Auto Parts",
         email: "mekdes@autoparts.et",
         phone: "+251911223344",
-        profileImage: "/images/sellers/mekdes.jpg",
+        avatar_url: "/images/sellers/mekdes.jpg",
         business_name: "Mekdes Auto Parts",
         rating: {
           average: 4.7,
@@ -39,7 +39,7 @@ export function getMockProducts(): ProductMessage[] {
         name: "Tikur Parts Center",
         email: "contact@tikurparts.et",
         phone: "+251922556677",
-        profileImage: "/images/sellers/tikur.jpg",
+        avatar_url: "/images/sellers/tikur.jpg",
         business_name: "Tikur Parts Center",
         rating: {
           average: 4.2,
@@ -62,7 +62,7 @@ export function getMockProducts(): ProductMessage[] {
         name: "Selam Trucks Hub",
         email: "info@selamtrucks.et",
         phone: "+251933889900",
-        profileImage: "/images/sellers/selam.jpg",
+        avatar_url: "/images/sellers/selam.jpg",
         business_name: "Selam Trucks Hub",
         rating: {
           average: 4.9,
